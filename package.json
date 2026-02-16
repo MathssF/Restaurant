@@ -1,0 +1,27 @@
+{
+  "name": "restaurant",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Matheus Flores",
+  "description": "Restaurant management system (monorepo)",
+  "workspaces": [
+    "server",
+    "waiter",
+    "kitchen",
+    "admin",
+    "client"
+  ],
+  "scripts": {
+    "dev:server": "npm run start:dev --workspace=server",
+    "dev:waiter": "npm run dev --workspace=waiter",
+    "dev:kitchen": "npm run dev --workspace=kitchen",
+    "dev:admin": "npm run dev --workspace=admin",
+    "dev:client": "npm run dev --workspace=client",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:waiter\" \"npm run dev:kitchen\" \"npm run dev:admin\"",
+    "build": "npm run build --workspaces",
+    "install:all": "npm install --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
