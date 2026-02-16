@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: restaurant_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: restaurant
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: restaurant_rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"   # conexão AMQP
+      - "15672:15672" # painel web
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  mysql_data:
