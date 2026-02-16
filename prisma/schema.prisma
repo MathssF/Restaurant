@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Waiter {
+  id         Int      @id @default(autoincrement())
+  name       String
+  cpf        String   @unique
+  status     Int
+  enterCode  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  openedTables OpenTable[]
+  orders       Order[]
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  user      String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Table {
+  id        Int      @id @default(autoincrement())
+  status    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  openTables OpenTable[]
+}
+
+model Product {
+  id              Int      @id @default(autoincrement())
+  name            String
+  priceInCents    Int
+  description     String
+  imagePath       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  orderItems      OrderItem[]
+}
+
+model OpenTable {
+  id                   Int      @id @default(autoincrement())
+  tableId              Int
+  waiterOpenId         Int
+  currentValueInCents  Int      @default(0)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  table    Table  @relation(fields: [tableId], references: [id])
+  waiter   Waiter @relation(fields: [waiterOpenId], references: [id])
+
+  orders   Order[]
+}
+
+model Order {
+  id          Int      @id @default(autoincrement())
+  openTableId Int
+  waiterId    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  openTable OpenTable @relation(fields: [openTableId], references: [id])
+  waiter    Waiter    @relation(fields: [waiterId], references: [id])
+
+  items     OrderItem[]
+}
+
+model OrderItem {
+  orderId   Int
+  productId Int
+  qtd       Int
+
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@id([orderId, productId])
+}
