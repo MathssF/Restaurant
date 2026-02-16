@@ -22,6 +22,11 @@
     "install:all": "npm install --workspaces"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "prisma": "^7.4.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.4.0",
+    "mysql2": "^3.17.2"
   }
 }
